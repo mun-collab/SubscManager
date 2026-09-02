@@ -1,5 +1,46 @@
 package service;
 
-public class SubscriptionService {
+import java.util.ArrayList;
+import java.util.List;
 
+import model.Subscription;
+
+public class SubscriptionService {
+	private List<Subscription> subscriptions = new ArrayList<>();
+	private int nextId = 1;
+
+	// 1. サブスク登録機能
+	public void addSubscription(String name, int price, String category, int renewalDay) {
+		Subscription sub = new Subscription(nextId, name, price, category, renewalDay);
+		subscriptions.add(sub);
+		System.out.println("\n✅ 「" + name + "」を登録しました！（ID: " + nextId + "）");
+		nextId++;
+	}
+
+	// 2. サブスク一覧表示機能 & 月額合計算出
+	public void showAllSubscriptions() {
+		if (subscriptions.isEmpty()) {
+			System.out.println("\n登録されているサブスクはありません。");
+			return;
+		}
+
+		System.out.println("\n==================================================");
+		System.out.println(" ID | サービス名     | 月額料金   | カテゴリ | 更新日");
+		System.out.println("--------------------------------------------------");
+
+		int totalPrice = 0;
+		for (Subscription sub : subscriptions) {
+			System.out.printf(" %2d | %-12s | %6d円 | %-6s | 毎月%2d日\n",
+					sub.getId(),
+					sub.getName(),
+					sub.getPrice(),
+					sub.getCategory(),
+					sub.getRenewalDay());
+			totalPrice += sub.getPrice();
+		}
+
+		System.out.println("--------------------------------------------------");
+		System.out.println(" 毎月の合計金額: " + totalPrice + "円");
+		System.out.println("==================================================");
+	}
 }
