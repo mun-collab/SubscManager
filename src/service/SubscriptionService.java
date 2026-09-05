@@ -43,4 +43,32 @@ public class SubscriptionService {
 		System.out.println(" 毎月の合計金額: " + totalPrice + "円");
 		System.out.println("==================================================");
 	}
+
+	// 3. サブスク情報更新機能
+	public void updateSubscription(int id, String newName, int newPrice, String newCategory, int newRenewalDay) {
+		for (Subscription sub : subscriptions) {
+			if (sub.getId() == id) {
+				sub.setName(newName);
+				sub.setPrice(newPrice);
+				sub.setCategory(newCategory);
+				sub.setRenewalDay(newRenewalDay);
+				System.out.println("\n✅ ID: " + id + " の情報を更新しました！");
+				return;
+			}
+		}
+		System.out.println("\n⚠️ 指定されたID (" + id + ") のサブスクが見つかりませんでした。");
+	}
+
+	// 4. サブスク削除機能
+	public void deleteSubscription(int id) {
+		for (int i = 0; i < subscriptions.size(); i++) {
+			if (subscriptions.get(i).getId() == id) {
+				String removedName = subscriptions.get(i).getName();
+				subscriptions.remove(i);
+				System.out.println("\n🗑️ 「" + removedName + "」（ID: " + id + "）を解約・削除しました。");
+				return;
+			}
+		}
+		System.out.println("\n⚠️ 指定されたID (" + id + ") のサブスクが見つかりませんでした。");
+	}
 }

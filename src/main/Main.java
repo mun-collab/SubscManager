@@ -47,11 +47,30 @@ public class Main {
 				break;
 
 			case MenuConst.UPDATE:
-				System.out.println("【未実装】更新処理呼び出し");
+				System.out.print("更新したいサブスクのIDを入力: ");
+				int updateId = scanner.nextInt();
+				scanner.nextLine();
+
+				System.out.print("新しいサービス名を入力: ");
+				String newName = scanner.nextLine();
+				System.out.print("新しい月額料金（円）を入力: ");
+				int newPrice = scanner.nextInt();
+				scanner.nextLine();
+				System.out.print("新しいカテゴリを入力: ");
+				String newCategory = scanner.nextLine();
+				System.out.print("新しい毎月の更新日（1〜31）を入力: ");
+				int newRenewalDay = scanner.nextInt();
+				scanner.nextLine();
+
+				service.updateSubscription(updateId, newName, newPrice, newCategory, newRenewalDay);
 				break;
 
 			case MenuConst.DELETE:
-				System.out.println("【未実装】削除処理呼び出し");
+				System.out.print("削除（解約）したいサブスクのIDを入力: ");
+				int deleteId = scanner.nextInt();
+				scanner.nextLine();
+
+				service.deleteSubscription(deleteId);
 				break;
 
 			case MenuConst.EXIT:
