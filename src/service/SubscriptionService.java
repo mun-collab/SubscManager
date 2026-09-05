@@ -1,5 +1,6 @@
 package service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,31 +18,45 @@ public class SubscriptionService {
 		nextId++;
 	}
 
-	// 2. サブスク一覧表示機能 & 月額合計算出
+	// 2. サブスク一覧表示機能 & 月額合計算出 & ⚠️更新日通知機能
 	public void showAllSubscriptions() {
 		if (subscriptions.isEmpty()) {
 			System.out.println("\n登録されているサブスクはありません。");
 			return;
 		}
 
-		System.out.println("\n==================================================");
-		System.out.println(" ID | サービス名     | 月額料金   | カテゴリ | 更新日");
-		System.out.println("--------------------------------------------------");
+		// 現在の「日」を取得
+		int currentDay = LocalDate.now().getDayOfMonth();
+
+		System.out.println("\n=========================================================");
+		System.out.println(" ID | サービス名     | 月額料金   | カテゴリ | 更新日 | 状態");
+		System.out.println("---------------------------------------------------------");
 
 		int totalPrice = 0;
 		for (Subscription sub : subscriptions) {
-			System.out.printf(" %2d | %-12s | %6d円 | %-6s | 毎月%2d日\n",
+			int renewalDay = sub.getRenewalDay();
+
+			// 残り日数の計算（更新日が今月の中で残り何日か、または当日の判定）
+			int daysLeft = renewalDay - currentDay;
+			String status = "";
+
+			if (daysLeft >= 0 && daysLeft <= 3) {
+				status = "⚠️解約注意 (あと" + daysLeft + "日)";
+			}
+
+			System.out.printf(" %2d | %-12s | %6d円 | %-6s | 毎月%2d日 | %s\n",
 					sub.getId(),
 					sub.getName(),
 					sub.getPrice(),
 					sub.getCategory(),
-					sub.getRenewalDay());
+					sub.getRenewalDay(),
+					status);
 			totalPrice += sub.getPrice();
 		}
 
-		System.out.println("--------------------------------------------------");
+		System.out.println("---------------------------------------------------------");
 		System.out.println(" 毎月の合計金額: " + totalPrice + "円");
-		System.out.println("==================================================");
+		System.out.println("=========================================================");
 	}
 
 	// 3. サブスク情報更新機能
